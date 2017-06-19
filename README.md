@@ -1,2 +1,2 @@
-# NabTrader
+# NT
 StockList
