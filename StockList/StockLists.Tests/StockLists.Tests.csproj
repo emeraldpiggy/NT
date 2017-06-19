@@ -5,11 +5,11 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{E16A7447-CE1B-4965-9AC5-CA91E5D0B078}</ProjectGuid>
+    <ProjectGuid>{5BA0FEBC-9DB9-43FC-9729-49793F608ADF}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>StockList.Tests</RootNamespace>
-    <AssemblyName>StockList.Tests</AssemblyName>
+    <RootNamespace>StockLists.Tests</RootNamespace>
+    <AssemblyName>StockLists.Tests</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -91,9 +91,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StockList\StockList.csproj">
-      <Project>{148CE59C-CBB9-4BC3-90A8-7DB677094384}</Project>
-      <Name>StockList</Name>
+    <ProjectReference Include="..\StockLists\StockLists.csproj">
+      <Project>{E4553619-64FC-4CC6-9B5B-8C5AAF54ED66}</Project>
+      <Name>StockLists</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

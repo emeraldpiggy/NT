@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Web.Mvc;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using StockList;
-using StockList.Controllers;
+using StockLists;
+using StockLists.Controllers;
 
-namespace StockList.Tests.Controllers
+namespace StockLists.Tests.Controllers
 {
     [TestClass]
     public class HomeControllerTest
