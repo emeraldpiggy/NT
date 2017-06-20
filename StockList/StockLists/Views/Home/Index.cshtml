@@ -16,9 +16,11 @@
         
         $("#grid").kendoGrid({
             dataSource: {
-                type: "odata",
+                type: "json",
                 transport: {
-                    read: ""
+                    read: {
+                        url: "Orders_Read"
+                    }
                 },
                 schema: {
                     model: {
@@ -42,4 +44,30 @@
             ]
         });
     });
+
+	function setDataSource() {
+	    //check if the data is in the db
+ 
+	    var dataSource = new kendo.data.DataSource({   
+	        type: "json",
+	        transport: {
+	            read: {
+                    url: "Orders_Read"
+	            }
+	        },
+	        schema: {
+	            model: {
+	                fields: {
+	                    UnitId: { type: "string" },
+	                    UnitName: { type: "string" },
+	                    Location: { type: "string" },
+	                    Number: { type: "string" },
+	                    Rating: { type: "string" },
+	                    Assessed: { type: "date" }
+	                }
+	            }
+	        },
+	    });
+ 
+	}
 </script>

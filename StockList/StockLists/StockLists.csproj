@@ -119,7 +119,7 @@
     </Compile>
     <Compile Include="HubClient\Client.cs" />
     <Compile Include="HubClient\HubClient.cs" />
-    <Compile Include="Models\OrderViewModel.cs" />
+    <Compile Include="Models\EquityViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -19,5 +19,10 @@ namespace StockList.HubClient
         {
             _client.SendMessage(equity);
         }
+
+        public IEnumerable<Equity> GetMessage()
+        {
+            return _client.GetMessage();
+        }
     }
 }

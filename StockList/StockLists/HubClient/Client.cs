@@ -39,6 +39,12 @@ namespace StockList.HubClient
 
         }
 
+        public IEnumerable<Equity> GetMessage()
+        {
+            _hubProxy.Invoke<IEnumerable<Equity>>("Get").Wait();
+            return null;
+        }
+
         public void SendMessage(IEnumerable<Equity> vm)
         {
             _hubProxy.Invoke<IEnumerable<Equity>>("Send", vm).Wait();

@@ -39,6 +39,13 @@ namespace HubService
         }
 
 
+        public IEnumerable<Equity> Get()
+        {
+            LogMessage("Receive Message");
+            return GetAllStocks();
+        }
+
+
         public IEnumerable<Equity> GetAllStocks()
         {
             return _ticker.GetAllEquities();

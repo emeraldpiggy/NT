@@ -2,24 +2,25 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
+using StockList.HubClient;
 using StockLists.Models;
+using ServiceDomain;
 
 namespace StockLists.Controllers
 {
 	public partial class GridController : Controller
-    {
+	{
+	    private HubClient _hc;
 		public ActionResult Orders_Read()
 		{
-			var result = Enumerable.Range(0, 50).Select(i => new OrderViewModel
-			{
-				OrderID = i,
-				Freight = i * 10,
-				OrderDate = DateTime.Now.AddDays(i),
-				ShipName = "ShipName " + i,
-				ShipCity = "ShipCity " + i
-			});
-
+		    _hc = new HubClient();
+		    _hc.SetupHubProxy(Update);
+		    var result = _hc.GetMessage();
 			return Json(result);
 		}
-	}
+
+        private void Update(IEnumerable<Equity> e)
+        {
+        }
+    }
 }
