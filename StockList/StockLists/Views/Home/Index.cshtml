@@ -1,9 +1,45 @@
 ﻿@{
-    ViewBag.Title = "Stock List";
+    ViewBag.Title = "List";
 }
 
-
-<div class="row">
-    <div class="col-md-4">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-xs-18 col-md-12">
+			<div id="grid"></div>
+		</div>
     </div>
 </div>
+<script>
+	$(document).ready(function() {
+	        
+        $(".textButton").kendoButton();
+        
+        $("#grid").kendoGrid({
+            dataSource: {
+                type: "odata",
+                transport: {
+                    read: ""
+                },
+                schema: {
+                    model: {
+                        fields: {
+                            Symbol: { type: "string" },
+                            Price: { type: "number" }
+                        }
+                    }
+                },
+                pageSize: 50
+            },
+            height: 550,
+            filterable: true,
+            sortable: true,
+            pageable: true,
+            columns: [{
+                    field:"Symbol",
+                    filterable: true
+                },
+                "Price"
+            ]
+        });
+    });
+</script>
