@@ -1,17 +1,18 @@
 ﻿@{
     ViewBag.Title = "Stock List";
 }
-<div class="container-fluid">
-    <div class="row">
-        <div>
-            <div id="grid"  align=center style="width:1400px;"/>
+<div class="container-fluid" align=center>
+    <div class="row" align=center>
+        <div align=center>
+            <div id="grid" align=center style="max-width:1600px;margin-bottom:20px" />
         </div>
     </div>
 </div>
 <script>
     $.getScript('http://localhost:8088/Nab/signalr/hubs', function () {
-        $.connection.hub.url = "http://localhost:8088/Nab/signalr";
+        jQuery.support.cors = true;
         var ticker = $.connection.Ticker;
+        $.connection.hub.url = "http://localhost:8088/Nab/signalr";
 
         $("#notification").kendoNotification({
             width: "100%",
@@ -21,62 +22,63 @@
             }
         });
 
-        $.connection.hub.start().then(init);
+        $.connection.hub.start(function () {
+            console.log('connection started!');
+        }).then(init);
 
-        function init() {
-            return ticker.server.getAllStocks().done(function (stocks) {
+        ticker.client.updateStockPrice = function (stocks) {
+
+            $("#grid").kendoGrid({
+                height: 550,
+                editable: false,
+                sortable: true,
+                filterable: true,
+                pageable: true,
+                columns: [
+                    { field: "Symbol" },
+                    { field: "Price" }
+                ],
+                dataSource: {
+                    data: stocks,
+                    schema: {
+                        model: {
+                            fields: {
+                                "Symobol": { editable: false, nullable: true, type: "string" },
+                                "Price": { type: "number" }
+                            }
+                        }
+                    },
+                    sort: [{ field: "Symbol", dir: "desc" }]
+                }
             });
         }
 
-
-        $("#grid").kendoGrid({
-            height: 550,
-            editable: false,
-            sortable: true,
-            filterable: true,
-            pageable: true,
-            columns: [
-                { field: "Symbol" },
-                { field: "Price" }
-            ],
-            dataSource: {
-                type: "signalr",
-                autoSync: true,
-                // Handle the push event to display notifications when push updates arrive
-                push: function (e) {
-                    var notification = $("#notification").data("kendoNotification");
-                    notification.success(e.type);
-                },
-                schema: {
-                    model: {
-                        id: "Symbol",
-                        fields: {
-                            "Symobol": { editable: false, nullable: true },
-                            "Price": { type: "number" }
-                        }
+        function init() {
+            return ticker.server.get().done(function (stocks) {
+                $("#grid").kendoGrid({
+                    height: 550,
+                    editable: false,
+                    sortable: true,
+                    filterable: true,
+                    pageable: true,
+                    columns: [
+                        { field: "Symbol" },
+                        { field: "Price" }
+                    ],
+                    dataSource: {
+                        data: stocks,
+                        schema: {
+                            model: {
+                                fields: {
+                                    "Symobol": { editable: false, nullable: true, type: "string" },
+                                    "Price": { type: "number" }
+                                }
+                            }
+                        },
+                        sort: [{ field: "Symbol", dir: "desc" }]
                     }
-                },
-            sort: [{ field: "CreatedAt", dir: "desc" }],
-            //transport: {
-            //    signalr: {
-            //        promise: hubStart,
-            //        hub: hub,
-            //        server: {
-            //            read: "read",
-            //            update: "update",
-            //            destroy: "destroy",
-            //            create: "create"
-            //        },
-            //        client: {
-            //            read: "read",
-            //            update: "update",
-            //            destroy: "destroy",
-            //            create: "create"
-            //        }
-            //    }
-            //}
-            }
-        });
+                });
+            });
+        }
     });
-
 </script>

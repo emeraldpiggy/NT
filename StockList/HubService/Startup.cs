@@ -10,6 +10,7 @@ namespace HubService
         public void Configuration(IAppBuilder app)
         {
             app.UseErrorPage();
+            app.UseCors(CorsOptions.AllowAll);
 
             var hubConfiguration = new HubConfiguration
             {
@@ -21,8 +22,7 @@ namespace HubService
             };
 
             app.MapSignalR(hubConfiguration);
-            app.UseCors(CorsOptions.AllowAll);
-            app.MapSignalR(hubConfiguration);
+            
 
             // Turn tracing on programmatically
             GlobalHost.TraceManager.Switch.Level = SourceLevels.All;

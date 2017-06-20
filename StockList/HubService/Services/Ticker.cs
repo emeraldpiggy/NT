@@ -12,7 +12,7 @@ namespace HubService.Services
     public class Ticker : ITicker
     {
         private static readonly Lazy<Ticker> TickerInstance = new Lazy<Ticker>(
-            () => new Ticker(GlobalHost.ConnectionManager.GetHubContext<TickerHub>().Clients, 0.01d));
+            () => new Ticker(GlobalHost.ConnectionManager.GetHubContext<TickerHub>().Clients, 0.1d));
 
 
         // Singleton to access ticker instance 
@@ -58,7 +58,7 @@ namespace HubService.Services
             for (int i = 0; i < MaximumEquties; i++)
             {
                 string symbol = "Share" + i;
-                _equityConcurrentDictionary.TryAdd(symbol, new Equity() { Symbol = symbol, Price = 1m });
+                _equityConcurrentDictionary.TryAdd(symbol, new Equity() { Symbol = symbol, Price = 10m });
             }
         }
 
@@ -72,13 +72,21 @@ namespace HubService.Services
                     if (!_updatingPrices)
                     {
                         _updatingPrices = true;
+                        bool ischanged = false;
                         foreach (var equity in _equityConcurrentDictionary.Values)
                         {
-                            if (TryUpdateStockPrice(equity))
+                            var r = _updateUpDownRandom.NextDouble();
+                            if (TryUpdateStockPrice(equity,r))
                             {
-                                SendPrice(equity);
+                                ischanged = true;
                             }
+                            
                         }
+                        if (ischanged)
+                        {
+                            SendPrice(_equityConcurrentDictionary.Values);
+                        }
+                        _updatingPrices = false;
                     }
                 }
             }
@@ -87,25 +95,17 @@ namespace HubService.Services
 
         private void SendReset()
         {
-            //Clients.All.marketReset();
+            Clients.All.marketReset();
         }
 
-        private void SendPrice(Equity equity)
+        private void SendPrice(IEnumerable<Equity> equity)
         {
-            //Clients.All.updateStockPrice(equity);
+            Clients.All.updateStockPrice(equity);
         }
-        private bool TryUpdateStockPrice(Equity equity)
+        private bool TryUpdateStockPrice(Equity equity, double r)
         {
-            var r = _updateUpDownRandom.NextDouble();
-
-            if (r > 0.1)
-            {
-                return false;
-            }
-
-            // Update the stock price by a random factor of the range percent
             var random = new Random((int)Math.Floor(equity.Price));
-            var percentChange = random.NextDouble() * _volitility;
+            var percentChange = random.NextDouble() * _volitility*r;
             var pos = random.NextDouble() > 0.51;
             var change = Math.Round(equity.Price * (decimal)percentChange, 2);
             change = pos ? change : -change;

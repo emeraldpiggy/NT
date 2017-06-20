@@ -31,13 +31,6 @@ namespace HubService
             Clients.All.Update(equity);
         }
 
-        public IEnumerable<Equity> Send(IEnumerable<Equity> equity)
-        {
-            LogMessage("Receive Message");
-            BroadcastSignal(equity);
-            return equity;
-        }
-
 
         public IEnumerable<Equity> Get()
         {
@@ -59,7 +52,7 @@ namespace HubService
 
         private void LogMessage(string caller)
         {
-            Console.WriteLine("");
+            Console.WriteLine(caller);
         }
     }
 }

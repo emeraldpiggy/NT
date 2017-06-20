@@ -6,6 +6,7 @@ using SimpleInjector.Integration.Web.Mvc;
 using System.Linq;
 using System.IO;
 using System.Collections.Generic;
+using Microsoft.AspNet.SignalR;
 using Owin;
 
 namespace StockLists
@@ -14,7 +15,9 @@ namespace StockLists
     {
         public void Configuration(IAppBuilder app)
         {
-            app.MapSignalR();
+            var config = new HubConfiguration();
+            config.EnableJSONP = true;
+            app.MapSignalR(config);
         }
     }
 

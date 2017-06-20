@@ -8,22 +8,20 @@ namespace ServiceDomain
 {
     public class Equity
     {
-        private decimal _price;
-
+        /// <summary>
+        /// Gets or sets the symbol.
+        /// </summary>
+        /// <value>
+        /// The symbol.
+        /// </value>
         public string Symbol { get; set; }
 
-        public decimal Price
-        {
-            get { return _price; }
-            set { _price = value; }
-        }
-    }
-
-
-    public enum InvestmentType
-    {
-        Equity = 0,
-        Bonds = 1,
-        Fixed = 2
+        /// <summary>
+        /// Gets or sets the price.
+        /// </summary>
+        /// <value>
+        /// The price.
+        /// </value>
+        public decimal Price { get; set; }
     }
 }
