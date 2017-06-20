@@ -1,14 +1,29 @@
+using System.Reflection;
+using System.Web.Mvc;
+using SimpleInjector;
+using SimpleInjector.Integration.Web;
+using SimpleInjector.Integration.Web.Mvc;
+using System.Linq;
+using System.IO;
+using System.Collections.Generic;
+using Owin;
+
+namespace StockLists
+{
+    public class Startup
+    {
+        public void Configuration(IAppBuilder app)
+        {
+            app.MapSignalR();
+        }
+    }
+
+}
+
+
 namespace StockLists.App_Start
 {
-    using System.Reflection;
-    using System.Web.Mvc;
-    using SimpleInjector;
-    using SimpleInjector.Integration.Web;
-    using SimpleInjector.Integration.Web.Mvc;
-    using System.Linq;
-    using System.IO;
-    using System.Collections.Generic;
-
+   
     /// <summary>
     /// 
     /// </summary>
@@ -21,11 +36,8 @@ namespace StockLists.App_Start
         {
             var container = new Container();
             container.Options.DefaultScopedLifestyle = new WebRequestLifestyle();
-
             InitializeContainer(container);
-
             container.RegisterMvcControllers(Assembly.GetExecutingAssembly());
-
             container.Verify();
 
             DependencyResolver.SetResolver(new SimpleInjectorDependencyResolver(container));
@@ -43,7 +55,7 @@ namespace StockLists.App_Start
             foreach (var allAssembly in allAssemblies)
             {
                 var registrations = allAssembly.GetExportedTypes()
-                    .Where(t => t.Namespace != null && t.Namespace.StartsWith("N")&& !t.Namespace.Contains("N*.IOC") 
+                    .Where(t => t.Namespace != null && t.Namespace.StartsWith("N") && !t.Namespace.Contains("N*.IOC")
                                 && t.IsClass && !t.IsGenericType && t.GetInterfaces().Any())
                     .Select(type => new { Service = type.GetInterfaces().First(), Implementation = type }).ToArray();
 
@@ -52,8 +64,6 @@ namespace StockLists.App_Start
                     container.Register(reg.Service, reg.Implementation, Lifestyle.Transient);
                 }
             }
-
-            container.Verify();
 
         }
 

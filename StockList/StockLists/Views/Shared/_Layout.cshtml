@@ -90,31 +90,33 @@
             }
         }
     </style>
-	<link href="@Url.Content("~/Content/kendo/2017.2.504/kendo.common-material.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.2.504/kendo.common-material.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.2.504/kendo.common.min.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/kendo/2017.2.504/kendo.default.min.css")" rel="stylesheet" type="text/css" />
 	<link href="@Url.Content("~/Content/kendo/2017.2.504/kendo.mobile.all.min.css")" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/Content/kendo/2017.2.504/kendo.dataviz.min.css")" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/Content/kendo/2017.2.504/kendo.material.min.css")" rel="stylesheet" type="text/css" />
-	<link href="@Url.Content("~/Content/kendo/2017.2.504/kendo.dataviz.material.min.css")" rel="stylesheet" type="text/css" />
-	<script src="@Url.Content("~/Scripts/kendo/2017.2.504/jquery.min.js")"></script>
+    <link href="@Url.Content("~/Content/kendo/2017.2.504/kendo.material.min.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-1.10.2.min.js")"></script>
 	<script src="@Url.Content("~/Scripts/kendo/2017.2.504/angular.min.js")"></script>
 	<script src="@Url.Content("~/Scripts/kendo/2017.2.504/jszip.min.js")"></script>
-	<script src="@Url.Content("~/Scripts/kendo/2017.2.504/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/kendo/2017.2.504/kendo.all.min.js")"></script>
+    <script src="@Url.Content("~/Scripts/jquery.signalR-2.2.2.min.js")"></script>
 </head>
 <body>
     @RenderBody()
-    <script>
-        $(document).ready(function () {
-            $("#menu").kendoMenu();
 
-            $("#responsive-panel").kendoResponsivePanel({
-                breakpoint: 768,
-                autoClose: false,
-                orientation: "top"
-            });
+<script>
+    $(document).ready(function () {
+        $("#menu").kendoMenu();
+
+        $("#responsive-panel").kendoResponsivePanel({
+            breakpoint: 768,
+            autoClose: false,
+            orientation: "top"
         });
-        function onclick(e) {
-            $("#responsive-panel").getKendoResponsivePanel().toggle();
-        }
-    </script>
+    });
+    function onclick(e) {
+        $("#responsive-panel").getKendoResponsivePanel().toggle();
+    }
+</script>
 </body>
 </html>

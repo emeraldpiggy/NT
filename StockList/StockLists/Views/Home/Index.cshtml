@@ -1,73 +1,82 @@
 ﻿@{
-    ViewBag.Title = "List";
+    ViewBag.Title = "Stock List";
 }
-
 <div class="container-fluid">
     <div class="row">
-        <div class="col-xs-18 col-md-12">
-			<div id="grid"></div>
-		</div>
+        <div>
+            <div id="grid"  align=center style="width:1400px;"/>
+        </div>
     </div>
 </div>
 <script>
-	$(document).ready(function() {
-	        
-        $(".textButton").kendoButton();
-        
+    $.getScript('http://localhost:8088/Nab/signalr/hubs', function () {
+        $.connection.hub.url = "http://localhost:8088/Nab/signalr";
+        var ticker = $.connection.Ticker;
+
+        $("#notification").kendoNotification({
+            width: "100%",
+            position: {
+                top: 0,
+                left: 0
+            }
+        });
+
+        $.connection.hub.start().then(init);
+
+        function init() {
+            return ticker.server.getAllStocks().done(function (stocks) {
+            });
+        }
+
+
         $("#grid").kendoGrid({
+            height: 550,
+            editable: false,
+            sortable: true,
+            filterable: true,
+            pageable: true,
+            columns: [
+                { field: "Symbol" },
+                { field: "Price" }
+            ],
             dataSource: {
-                type: "json",
-                transport: {
-                    read: {
-                        url: "Orders_Read"
-                    }
+                type: "signalr",
+                autoSync: true,
+                // Handle the push event to display notifications when push updates arrive
+                push: function (e) {
+                    var notification = $("#notification").data("kendoNotification");
+                    notification.success(e.type);
                 },
                 schema: {
                     model: {
+                        id: "Symbol",
                         fields: {
-                            Symbol: { type: "string" },
-                            Price: { type: "number" }
+                            "Symobol": { editable: false, nullable: true },
+                            "Price": { type: "number" }
                         }
                     }
                 },
-                pageSize: 50
-            },
-            height: 550,
-            filterable: true,
-            sortable: true,
-            pageable: true,
-            columns: [{
-                    field:"Symbol",
-                    filterable: true
-                },
-                "Price"
-            ]
+            sort: [{ field: "CreatedAt", dir: "desc" }],
+            //transport: {
+            //    signalr: {
+            //        promise: hubStart,
+            //        hub: hub,
+            //        server: {
+            //            read: "read",
+            //            update: "update",
+            //            destroy: "destroy",
+            //            create: "create"
+            //        },
+            //        client: {
+            //            read: "read",
+            //            update: "update",
+            //            destroy: "destroy",
+            //            create: "create"
+            //        }
+            //    }
+            //}
+            }
         });
     });
 
-	function setDataSource() {
-	    //check if the data is in the db
- 
-	    var dataSource = new kendo.data.DataSource({   
-	        type: "json",
-	        transport: {
-	            read: {
-                    url: "Orders_Read"
-	            }
-	        },
-	        schema: {
-	            model: {
-	                fields: {
-	                    UnitId: { type: "string" },
-	                    UnitName: { type: "string" },
-	                    Location: { type: "string" },
-	                    Number: { type: "string" },
-	                    Rating: { type: "string" },
-	                    Assessed: { type: "date" }
-	                }
-	            }
-	        },
-	    });
- 
-	}
 </script>

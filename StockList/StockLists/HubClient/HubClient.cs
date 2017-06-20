@@ -9,7 +9,7 @@ namespace StockList.HubClient
         private StockList.HubClient.Client _client;
         public void SetupHubProxy(Action<IEnumerable<Equity>> update)
         {
-            string url = @"http://localhost:8088/Ch9";
+            string url = @"http://localhost:8088/Nab";
             var writer = Console.Out;
             _client = new StockList.HubClient.Client(writer);
             _client.Run(url, update);
